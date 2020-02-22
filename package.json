@@ -1,0 +1,17 @@
+{
+  "name": "com.enginerartist.gameobject-picker",
+  "version": "0.1.0",
+  "displayName": "GameObject Picker",
+  "description": "This package extends the functionality of UnityEditor's default PropertyDrawer for GameObjects by adding a convenient eyedropper-button that allows users to assign a GameObject-field by simply picking a GameObject from the editor scene view.",
+  "unity": "2019.3",
+  "keywords": [
+    "object picker",
+    "GameObject"
+  ],
+  "author": {
+    "name": "EngineArtist",
+    "email": "miika.vihersaari@gmail.com",
+    "url": "https://github.com/EngineArtist"
+  },
+  "hideInEditor": false
+}
