@@ -10,7 +10,7 @@ A CustomPropertyDrawer for GameObjects that extends the default PropertyDrawer w
 
 Installation happens through Unity's Package Manager. Open the Package Manager -window, click the plus-icon in the top-left corner and select 'Add package from git URL'. In the field, type:
 https://github.com/EngineArtist/GameObjectPicker.git
-Now the package should show up in the list of packages. Click it and click the Install-button in the bottom-right corner.
+Now the package should show up in the list of packages and be installed automatically.
 
 ## Usage
 
