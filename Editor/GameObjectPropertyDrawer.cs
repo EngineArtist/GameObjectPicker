@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEditor;
 
 
+namespace EngineArtist {
+
+
 public class PropertyDrawerUtils {
     public static Dictionary<string, Texture2D> icons = new Dictionary<string, Texture2D>();
     public static bool objectPickerMode = false;
@@ -81,4 +84,7 @@ public class GameObjectPropertyDrawer: PropertyDrawer {
         GUI.DrawTexture(pickerIconRect, PropertyDrawerUtils.GetIcon("object_picker"), ScaleMode.ScaleAndCrop, true);
         EditorGUI.EndProperty();
     }
+}
+
+
 }
