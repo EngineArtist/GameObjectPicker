@@ -74,7 +74,7 @@ public class GameObjectPropertyDrawer: PropertyDrawer {
         property.objectReferenceValue = EditorGUI.ObjectField(new Rect(position.x, position.y, position.width - position.height, position.height), label, property.objectReferenceValue, fieldInfo.FieldType, true);
         var pickerRect = new Rect(position.x + position.width - position.height, position.y, position.height, position.height);
 		var oldColor = GUI.backgroundColor;
-		if(GameObjectPropertyDrawerUtils.pickedDrawerID == GameObjectPropertyDrawerUtils.currentPropertyDrawerID) {
+		if(GameObjectPropertyDrawerUtils.pickedDrawer == this) {
 			GUI.backgroundColor = Color.cyan;
 		}
         if (GUI.Button(pickerRect, new GUIContent("","Pick object from the scene view"))) {
