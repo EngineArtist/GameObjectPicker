@@ -23,8 +23,11 @@ public static class GameObjectPropertyDrawerUtils {
                     break;
                 }
                 case EventType.MouseUp: {
+					if (cur.button == 0 && cur.isMouse)
+					{
                     GameObjectPropertyDrawerUtils.pickedObject = HandleUtility.PickGameObject(Event.current.mousePosition, true);
-                    GameObjectPropertyDrawerUtils.objectPickerMode = false;
+					}
+					GameObjectPropertyDrawerUtils.objectPickerMode = false;
                     UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
                     break;
                 }
@@ -45,7 +48,7 @@ public static class GameObjectPropertyDrawerUtils {
     }
 }
 
-
+//Add more attributes here to enable object picker for fields of other types
 [CustomPropertyDrawer(typeof(GameObject))]
 public class GameObjectPropertyDrawer: PropertyDrawer {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
@@ -57,15 +60,24 @@ public class GameObjectPropertyDrawer: PropertyDrawer {
         if (!GameObjectPropertyDrawerUtils.objectPickerMode &&
             GameObjectPropertyDrawerUtils.pickedPropertyPath == property.propertyPath &&
             GameObjectPropertyDrawerUtils.pickedDrawer == this) {
-            property.objectReferenceValue = GameObjectPropertyDrawerUtils.pickedObject;
+			if((property.serializedObject.targetObject as MonoBehaviour)?.gameObject != GameObjectPropertyDrawerUtils.pickedObject){
+				property.objectReferenceValue = GameObjectPropertyDrawerUtils.pickedObject;
+			}
+			else {
+				Debug.LogWarning("Can't pick self, recursion threat",property.serializedObject.targetObject);
+			}
             GameObjectPropertyDrawerUtils.pickedObject = null;
             GameObjectPropertyDrawerUtils.pickedPropertyPath = "";
             GameObjectPropertyDrawerUtils.pickedDrawer = null;
         }
         EditorGUI.BeginProperty(position, label, property);
-        property.objectReferenceValue = EditorGUI.ObjectField(new Rect(position.x, position.y, position.width - position.height, position.height), label, property.objectReferenceValue, typeof(GameObject), true);
+        property.objectReferenceValue = EditorGUI.ObjectField(new Rect(position.x, position.y, position.width - position.height, position.height), label, property.objectReferenceValue, fieldInfo.FieldType, true);
         var pickerRect = new Rect(position.x + position.width - position.height, position.y, position.height, position.height);
-        if (GUI.Button(pickerRect, "")) {
+		var oldColor = GUI.backgroundColor;
+		if(GameObjectPropertyDrawerUtils.pickedDrawerID == GameObjectPropertyDrawerUtils.currentPropertyDrawerID) {
+			GUI.backgroundColor = Color.cyan;
+		}
+        if (GUI.Button(pickerRect, new GUIContent("","Pick object from the scene view"))) {
             GameObjectPropertyDrawerUtils.objectPickerMode = !GameObjectPropertyDrawerUtils.objectPickerMode;
             if (GameObjectPropertyDrawerUtils.objectPickerMode) {
                 GameObjectPropertyDrawerUtils.pickedPropertyPath = property.propertyPath;
@@ -75,7 +87,8 @@ public class GameObjectPropertyDrawer: PropertyDrawer {
                 GameObjectPropertyDrawerUtils.pickedPropertyPath = "";
                 GameObjectPropertyDrawerUtils.pickedDrawer = null;
             }
-        }
+        }		
+		GUI.backgroundColor = oldColor;
         var pickerOffsetX = pickerRect.width / 8f;
         var pickerOffsetY = pickerRect.height / 8f;
         var pickerIconRect = new Rect(pickerRect.x + pickerOffsetX, pickerRect.y + pickerOffsetY, pickerRect.width - pickerOffsetX*2f, pickerRect.height - pickerOffsetY*2f);
